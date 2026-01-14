@@ -1,29 +1,15 @@
 import { NextResponse } from 'next/server'
 
-// 간단한 인메모리 저장소 (실제로는 DB 사용)
-const votes: Record<string, { guilty: number; notGuilty: number }> = {}
-const votedSessions: Set<string> = new Set()
+export const runtime = 'edge'
 
-// POST: 투표 처리
+// 인메모리 저장소 (Edge에서는 KV 사용 권장, MVP에서는 시뮬레이션)
+const votes: Record<string, { guilty: number; notGuilty: number }> = {}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { caseId, verdict, sessionId } = body as {
-      caseId: string
-      verdict: 'guilty' | 'notGuilty'
-      sessionId: string
-    }
+    const { caseId, verdict } = body
 
-    // 중복 투표 체크
-    const voteKey = `${caseId}:${sessionId}`
-    if (votedSessions.has(voteKey)) {
-      return NextResponse.json(
-        { error: '이미 투표하셨습니다.' },
-        { status: 400 }
-      )
-    }
-
-    // 투표 기록
     if (!votes[caseId]) {
       votes[caseId] = { guilty: 0, notGuilty: 0 }
     }
@@ -34,14 +20,11 @@ export async function POST(request: Request) {
       votes[caseId].notGuilty++
     }
 
-    votedSessions.add(voteKey)
-
     return NextResponse.json({
       success: true,
       votes: votes[caseId],
     })
-  } catch (error) {
-    console.error('투표 처리 실패:', error)
+  } catch {
     return NextResponse.json(
       { error: '투표 처리에 실패했습니다.' },
       { status: 500 }
@@ -49,7 +32,6 @@ export async function POST(request: Request) {
   }
 }
 
-// GET: 투표 현황 조회
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const caseId = searchParams.get('caseId')
@@ -62,6 +44,5 @@ export async function GET(request: Request) {
   }
 
   const caseVotes = votes[caseId] || { guilty: 0, notGuilty: 0 }
-
   return NextResponse.json({ votes: caseVotes })
 }
