@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "AI 민심 법정 - 시민 참여형 AI 재판 시뮬레이션",
   "private": true,
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -12,12 +15,12 @@
     "db:studio": "prisma studio"
   },
   "dependencies": {
-    "next": "14.2.0",
+    "next": "14.2.18",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "@prisma/client": "^5.10.0",
     "openai": "^4.28.0",
-    "cheerio": "^1.0.0-rc.12",
+    "cheerio": "1.0.0-rc.12",
     "axios": "^1.6.7",
     "zustand": "^4.5.0",
     "framer-motion": "^11.0.0",
