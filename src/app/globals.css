@@ -1,0 +1,137 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 악마판사 스타일 다크 모드 */
+:root {
+  --court-black: #0a0a0a;
+  --court-dark: #121212;
+  --court-gray: #1e1e1e;
+  --court-gold: #c9a227;
+  --court-crimson: #8b0000;
+  --court-blue: #1e3a5f;
+  --court-silver: #c0c0c0;
+}
+
+body {
+  background-color: var(--court-black);
+  color: var(--court-silver);
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* 법정 스타일 요소들 */
+.court-card {
+  @apply bg-court-gray border border-court-gold/20 rounded-lg;
+  box-shadow: 0 4px 20px rgba(201, 162, 39, 0.1);
+}
+
+.court-glow {
+  box-shadow: 0 0 30px rgba(201, 162, 39, 0.15);
+}
+
+.court-button {
+  @apply px-6 py-3 font-bold rounded transition-all duration-300;
+}
+
+.court-button-guilty {
+  @apply bg-court-crimson hover:bg-red-700 text-white;
+  box-shadow: 0 0 20px rgba(139, 0, 0, 0.4);
+}
+
+.court-button-innocent {
+  @apply bg-court-blue hover:bg-blue-700 text-white;
+  box-shadow: 0 0 20px rgba(30, 58, 95, 0.4);
+}
+
+/* 에이전트 발언 스타일 */
+.agent-message {
+  @apply p-6 rounded-lg mb-4 relative;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.agent-prosecutor {
+  @apply bg-gradient-to-r from-court-crimson/20 to-transparent border-l-4 border-court-crimson;
+}
+
+.agent-defender {
+  @apply bg-gradient-to-r from-court-blue/20 to-transparent border-l-4 border-court-blue;
+}
+
+.agent-judge {
+  @apply bg-gradient-to-r from-court-gold/20 to-transparent border-l-4 border-court-gold;
+}
+
+/* 투표 게이지 */
+.vote-gauge {
+  @apply h-8 rounded-full overflow-hidden relative;
+  background: linear-gradient(90deg, var(--court-gray) 0%, var(--court-gray) 100%);
+}
+
+.vote-gauge-guilty {
+  @apply h-full transition-all duration-1000;
+  background: linear-gradient(90deg, var(--court-crimson) 0%, #c0392b 100%);
+}
+
+.vote-gauge-innocent {
+  @apply h-full transition-all duration-1000;
+  background: linear-gradient(90deg, var(--court-blue) 0%, #2980b9 100%);
+}
+
+/* 애니메이션 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gavel {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-20deg); }
+  50% { transform: rotate(0deg); }
+  75% { transform: rotate(-10deg); }
+}
+
+.gavel-animation {
+  animation: gavel 0.5s ease-in-out;
+}
+
+/* 스크롤바 스타일 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--court-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--court-gold);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d4af37;
+}
+
+/* 텍스트 타이핑 효과 */
+.typing-effect {
+  overflow: hidden;
+  border-right: 2px solid var(--court-gold);
+  white-space: nowrap;
+  animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: var(--court-gold) }
+}
